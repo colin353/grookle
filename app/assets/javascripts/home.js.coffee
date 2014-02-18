@@ -3,7 +3,26 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $ ->
-	yes
+	window.checkboxlistcontroller = new CheckboxListController()
+
+class window.CheckboxListController
+	constructor: ->
+		@dom_element = $('.checkbox-list')
+		@tasks = []
+		# We expect to be able to read the data-task-ids as JSON:
+		element_ids = JSON.parse @dom_element.attr('data-task-ids')
+		assert element_ids instanceof Array, "Invaild data loaded"
+		for id in element_ids
+			t = new Task(id)
+			t.parent = @
+			@tasks.push t 
+
+	onUpdate: ->
+		# Update the HTML of the div with all of our elements.
+		html = ""
+		for t in @tasks
+			html += t.render()
+		@dom_element.html html
 
 class window.Task
 	constructor: (id) ->
@@ -15,7 +34,7 @@ class window.Task
 			@new()
 
 	render: ->
-		"p"
+		"<label><input type='checkbox'>#{@text}</label>"
 
 	# Load myself from the database.
 	load: (id) ->
@@ -43,9 +62,5 @@ class window.Task
 		return me
 
 	onUpdate: ->
+		@parent.onUpdate.call @parent
 		@needsUpdate = yes
-
-
-
-
-

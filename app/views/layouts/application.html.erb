@@ -9,13 +9,8 @@
 		<%= stylesheet_link_tag    "application", :media => "all" %>
 		<%= javascript_include_tag "application" %>
 		<%= csrf_meta_tags %>
-		<link type="text/css" rel="stylesheet" href="src/css/jquery.mmenu.css" />
-		<link type="text/css" rel="stylesheet" href="src/css/extensions/jquery.mmenu.widescreen.css" media="all and (min-width: 900px)" />
-		<link type="text/css" rel="stylesheet" href="src/css/extensions/jquery.mmenu.themes.css" media="all and (min-width: 900px)" />
 
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-		<script type="text/javascript" src="src/js/jquery.mmenu.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$('nav#menu').mmenu({
@@ -37,9 +32,8 @@
 			
 			<div id="content">
 		<%= yield%>
-			</div>
-			
-			<nav id="menu">
+		
+		<nav id="menu">
 				<ul>
 					<li class="Selected"><a href="index.html">Menu item #2</a></li>
 					<li><a href="#.html">Menu item #2</a></li>
