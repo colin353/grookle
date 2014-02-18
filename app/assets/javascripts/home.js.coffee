@@ -14,25 +14,33 @@ class window.Task
 		else 
 			@new()
 
+	render: ->
+		"p"
+
 	# Load myself from the database.
 	load: (id) ->
-		$.get 'get_task', { id: id }, (r) ->
+		me = @
+		$.get '/api/get_task', { id: id }, (r) ->
 			# Make sure the data is sensible.
 			assert r.id?, 'Illegal or invalid Task loaded'
 			# List of fields we care about
 			for k in ['id','text']
 				if r[k]? 
-					@[k] = r[k]
+					me[k] = r[k]
+			# Since things were loaded, let's call update
+			me.onUpdate.call me
 
 	new: ->
 		@text = "New task"
 
 	save: ->
+		me = @
 		data = {}
 		for k in ['id', 'text']
 			if @[k]?
-				data[k] = @[k]
-		$.get 'save_task', data
+				data[k] = me[k]
+		$.get '/api/save_task', data
+		return me
 
 	onUpdate: ->
 		@needsUpdate = yes

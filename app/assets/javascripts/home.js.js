@@ -12,24 +12,28 @@ window.Task = (function() {
     }
   }
 
+  Task.prototype.render = function() {
+    return "p";
+  };
+
   Task.prototype.load = function(id) {
-    return $.get('get_task', {
+    var me;
+
+    me = this;
+    return $.get('/api/get_task', {
       id: id
     }, function(r) {
-      var k, _i, _len, _ref, _results;
+      var k, _i, _len, _ref;
 
       assert(r.id != null, 'Illegal or invalid Task loaded');
       _ref = ['id', 'text'];
-      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         k = _ref[_i];
         if (r[k] != null) {
-          _results.push(this[k] = r[k]);
-        } else {
-          _results.push(void 0);
+          me[k] = r[k];
         }
       }
-      return _results;
+      return me.onUpdate.call(me);
     });
   };
 
@@ -38,17 +42,19 @@ window.Task = (function() {
   };
 
   Task.prototype.save = function() {
-    var data, k, _i, _len, _ref;
+    var data, k, me, _i, _len, _ref;
 
+    me = this;
     data = {};
     _ref = ['id', 'text'];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       k = _ref[_i];
       if (this[k] != null) {
-        data[k] = this[k];
+        data[k] = me[k];
       }
     }
-    return $.get('save_task', data);
+    $.get('/api/save_task', data);
+    return me;
   };
 
   Task.prototype.onUpdate = function() {
